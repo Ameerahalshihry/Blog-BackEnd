@@ -6,7 +6,7 @@ router.post('/', createPost);
 router.get('/', findAllPosts);
 router.get('/:id', findUserPosts);
 router.put('/:id', updatePost);
-router.delete('/:id', deleteUserPosts);
-router.delete('/:id', deletePost);
+router.delete('/deleteUserPosts/:id', deleteUserPosts);
+router.delete('/deletePost/:id', deletePost);
 
 export default router;
