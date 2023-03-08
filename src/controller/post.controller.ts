@@ -5,8 +5,10 @@ import {Request, Response} from 'express'
 export const createPost = async (req:Request, res:Response)=>{
     try{
         let post = await prisma.post.create({
-            data: req.body
-        })
+            data:{
+                title:req.body.title,
+                userId: res.locals.id //user id from token
+            }        })
         res.json({'msg':'post created', 'post':post})
     }catch(err){
         console.log(err);
@@ -53,9 +55,10 @@ export const findUserPosts= async (req:Request, res:Response)=>{
 //update Post
 export const updatePost = async (req:Request, res:Response)=>{
     try{
-        let post = await prisma.post.update({
+        let post = await prisma.post.updateMany({
             where:{
-                id: req.params.id
+                id: req.params.id,//post id
+                userId: res.locals.id //user id from token
             },
             data: req.body
         })
@@ -70,7 +73,7 @@ export const deleteUserPosts = async (req:Request, res:Response)=>{
     try{
         let posts = await prisma.post.deleteMany({
             where:{
-                userId: req.params.id
+                userId: res.locals.id //user id from token
             }
         })
         res.json({'msg':'all posts deleted', 'posts':posts})
@@ -82,9 +85,10 @@ export const deleteUserPosts = async (req:Request, res:Response)=>{
 //Delete post
 export const deletePost = async (req:Request, res:Response)=>{
     try{
-        let post = await prisma.post.delete({
+        let post = await prisma.post.deleteMany({
             where:{
-                id: req.params.id
+                id: req.params.id,
+                userId: res.locals.id //user id from token
             }
         })
         res.json({'msg':'post deleted', 'post':post})
